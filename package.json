@@ -1,13 +1,13 @@
 {
-  "name": "react-router-demo-1",
+  "name": "acme-product-category-redux",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "postinstall": "npm run webpack",
     "webpack": "./node_modules/webpack/bin/webpack.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "npm run webpack -- -w & DATABASE_URL=postgres://localhost/acme_products_category_redux nodemon server.js --ignore dist/ --ignore src/"
+    "start:dev": "npm run webpack -- -w & DATABASE_URL=postgres://localhost/acme_products_category_redux nodemon server/server.js"
   },
   "keywords": [],
   "author": "",
