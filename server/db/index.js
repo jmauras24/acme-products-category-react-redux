@@ -9,8 +9,13 @@ const sync = () => {
 const seed = () => {
   return Promise.all([
     Category.create({name: 'cat-1'}),
+    Category.create({name: 'cat-2'}),
     Product.create({name:'product-1'})
-      .then(product => product.setCategory(1))
+      .then(product => product.setCategory(1)),
+    Product.create({name: 'product-2'})
+      .then( product => product.setCategory(1)),
+    Product.create({name: 'product-3'})
+      .then( product => product.setCategory(2))
   ])
 }
 

@@ -11,13 +11,19 @@ app.get('/', (req,res,next) => res.sendFile(path.join(__dirname, '../public/inde
 
 app.get('/api/products', (req,res,next) => {
   Product.findAll({ include: Category })
-    .then(products => res.send(products))
+    .then(products =>  {
+      // console.log(`find ${products}`)
+      res.send(products)
+    })
     .catch(next)
 });
 
 app.get('/api/categories', (req,res,next) => {
-  Category.findAll({ include: Product })
-    .then(categories => res.send(categories))
+  Category.findAll({ include: [{ model: Product, as: 'products'}] })
+    .then(categories => {
+      // console.log(`find categories ${categories}`)
+      res.send(categories)
+    })
     .catch(next)
 });
 
