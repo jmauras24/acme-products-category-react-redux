@@ -3,18 +3,22 @@ import thunkMiddleware from 'redux-thunk';
 import axios from 'axios';
 
 
-// category
+// category ---------------------------- //
 const GET_CATEGORIES = 'GET_CATEGORIES';
 const CREATE_CATEGORY = 'CREATE_CATEGORY';
+const DELETE_CATEGORY = 'DELETE_CATEGORY';
 
 const categories = ( state = [], action ) => {
   switch(action.type){
     case GET_CATEGORIES:
       console.log(`GET_CATEGORIES: `, action.categories);
       return action.categories
-      case CREATE_CATEGORY:
+    case CREATE_CATEGORY:
       console.log(`CREATE_CATEGORY: `, action.category);
       return [...state, action.category];
+    case DELETE_CATEGORY:
+      console.log('DELETE_CATEGORY');
+      return state.filter( category => category.id != action.category.id )
   }
   return state;
 };
@@ -42,8 +46,18 @@ export const createCategory = ( categories ) => {
       })
   }
 }
+
+export const deleteCategory = ( category ) => {
+  return dispatch => {
+    console.log(`deleteCategory`, category.id)
+    return axios.delete(`/api/categories/${category.id}`)
+      .then(() => dispatch({ type: DELETE_CATEGORY, category }))
+      // .then(() => document.history.hash = '/')
+  };
+};
+
 //
-/* --------- --------- */
+/* --------- --------- ------------------------------------- */
 // product
 const GET_PRODUCTS = 'GET_PRODUCTS';
 const DELETE_PRODUCT = 'DELETE_PRODUCT';
@@ -58,6 +72,9 @@ const products = ( state = [], action ) => {
       return state.filter( product => product.id != action.product.id*1)
     case CREATE_PRODUCT:
       return [...state, action.product]
+    case DELETE_CATEGORY:
+      console.log('delete category prods', action.category.id)
+      return state.filter(product => product.categoryId !== action.category.id*1)
   }
   return state;
 };
@@ -89,7 +106,11 @@ export const createProduct = ( categoryId ) => {
       .then(product => {
         dispatch({ type: CREATE_PRODUCT, product })
       })
-      .then(() => document.location.hash = `/categories/${categoryId}`)
+      .then(() => {
+        // document.location.hash = '/users'
+        console.log(categoryId)
+        document.location.hash = `/categories/${categoryId}`;
+      })
   };
 };
 //

@@ -17,9 +17,7 @@ const Products = ({ products, deleteProduct }) => {
           products.map( product => {
             return(
               <div>
-                <li key={ product.id }> { product.name }  <button onClick={ () => deleteProduct(product) }>Delete Product </button> </li>
-
-                <span>{ product.category.name } </span>
+                <li key={ product.id }> { product.name }  <button onClick={ () => deleteProduct(product) }>Delete Product </button>  ({ product.category.name }) </li>
               </div>
             )
           })

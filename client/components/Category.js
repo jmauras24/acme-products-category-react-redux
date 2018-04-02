@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { createProduct, deleteCategory } from '../store';
 import { Link } from 'react-router-dom';
 
-const Category = ({ category, createProduct, deleteCategory  }) => {
+const Category = ({ category, products ,createProduct, deleteCategory  }) => {
 
-  console.log(category)
+  console.log('*****',category)
   const count = category.products ? category.products.length : 0;
   console.log(count)
   return(
@@ -13,13 +13,13 @@ const Category = ({ category, createProduct, deleteCategory  }) => {
       <h3><Link to='/'>Home</Link></h3>
       <h2>{ category.name }</h2>
       <span>
-        <button>Delete Category</button>
-        <button onClick={ () => createProduct(category.id)}>Add Product</button>
+        <button onClick={ () => deleteCategory(category) }>Delete Category</button>
+        <button onClick={ () => createProduct(category.id) }>Add Product</button>
       </span>
       <ul>
       {
         count > 0 ?
-          category.products.map( product => {
+          products.map( product => {
             return( <li key={ product.id} > { product.name } </li> )
           })
           : null
@@ -29,17 +29,18 @@ const Category = ({ category, createProduct, deleteCategory  }) => {
   )
 };
 
-const mapStateToProps = ({ categories }, { id }) => {
+const mapStateToProps = ({ categories, products }, { id }) => {
   const category = categories.find( category => category.id === id*1);
   return {
-    category: category
+    category: category,
+    products: products.filter( products => products.categoryId === category.id*1)
   };
 };
 
 const mapDispatchToProps = ( dispatch ) => {
   return {
     createProduct: (product) => dispatch(createProduct(product)),
-    deleteCategory: (categoryId) => dispatch(deleteCategory(categoryId))
+    deleteCategory: (category) => dispatch(deleteCategory(category))
   };
 };
 
