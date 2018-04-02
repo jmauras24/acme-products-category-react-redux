@@ -5,6 +5,7 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { getProducts, getCategories } from '../store';
 import Nav from './Nav';
 import Products from './Products';
+import Category from './Category';
 
 class App extends Component {
 
@@ -21,6 +22,7 @@ class App extends Component {
             <Switch>
               <Route path='/' exact component={ Nav } />
               <Route path='/products' exact component={ Products } />
+              <Route path='/categories/:id' render={ ({ match }) => <Category id={ match.params.id } />  } />
             </Switch>
           </div>
         </Router>

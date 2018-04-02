@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { deleteProduct } from '../store';
+import { Link } from 'react-router-dom';
 
 const Products = ({ products, deleteProduct }) => {
   console.log('PRODUCTS', products)
@@ -8,7 +9,9 @@ const Products = ({ products, deleteProduct }) => {
   //   return null
   return(
     <div>
+      <h2><Link to='/'>Home</Link></h2>
       <h1>All Products { products.length }</h1>
+
       <ul>
         {
           products.map( product => {

@@ -40,12 +40,14 @@ app.delete('/api/products/:id', (req,res,next) => {
     .catch(next)
 });
 
+
 app.post('/api/categories', (req,res,next) => {
   Category.create(req.body)
     .then(category => res.send(category))
     .catch(next)
 });
 
+/* ** */
 app.delete('/api/categories/:id', (req,res,next) => {
   Category.findById(req.params.id)
     .then(category => category.destroy())
