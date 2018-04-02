@@ -1035,9 +1035,11 @@ var deleteCategory = exports.deleteCategory = function deleteCategory(category) 
   return function (dispatch) {
     console.log('deleteCategory', category.id);
     return _axios2.default.delete('/api/categories/' + category.id).then(function () {
-      return dispatch({ type: DELETE_CATEGORY, category: category });
+      console.log('deleted category', category);
+      dispatch({ type: DELETE_CATEGORY, category: category });
+    }).then(function () {
+      return document.history.hash = '/products';
     });
-    // .then(() => document.history.hash = '/')
   };
 };
 
@@ -1061,6 +1063,7 @@ var products = function products() {
         return product.id != action.product.id * 1;
       });
     case CREATE_PRODUCT:
+      console.log('CREATE_PRODUCT', action.product);
       return [].concat(_toConsumableArray(state), [action.product]);
     case DELETE_CATEGORY:
       console.log('delete category prods', action.category.id);
@@ -28500,11 +28503,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Products = function Products(_ref) {
   var products = _ref.products,
-      deleteProduct = _ref.deleteProduct;
+      deleteProduct = _ref.deleteProduct,
+      categories = _ref.categories;
 
-  console.log('PRODUCTS', products);
+  console.log('PRODUCTS', products, categories);
   // if(!products.length)
   //   return null
+
+  // I do not always have a category array nested on return
   return _react2.default.createElement(
     'div',
     null,
@@ -28527,26 +28533,25 @@ var Products = function Products(_ref) {
       'ul',
       null,
       products.map(function (product) {
+        var category = categories.find(function (category) {
+          return category.id === product.categoryId;
+        });
         return _react2.default.createElement(
-          'div',
-          null,
+          'li',
+          { key: product.id },
+          ' ',
+          product.name,
+          '  ',
           _react2.default.createElement(
-            'li',
-            { key: product.id },
-            ' ',
-            product.name,
-            '  ',
-            _react2.default.createElement(
-              'button',
-              { onClick: function onClick() {
-                  return deleteProduct(product);
-                } },
-              'Delete Product '
-            ),
-            '  (',
-            product.category.name,
-            ') '
-          )
+            'button',
+            { onClick: function onClick() {
+                return deleteProduct(product);
+              } },
+            'Delete Product '
+          ),
+          '  (',
+          category.name,
+          ') '
         );
       })
     )
@@ -28554,10 +28559,13 @@ var Products = function Products(_ref) {
 };
 
 var mapStateToProps = function mapStateToProps(_ref2) {
-  var products = _ref2.products;
+  var products = _ref2.products,
+      categories = _ref2.categories;
 
+  console.log('products state', products);
   return {
-    products: products
+    products: products,
+    categories: categories
   };
 };
 
@@ -28601,9 +28609,7 @@ var Category = function Category(_ref) {
       deleteCategory = _ref.deleteCategory;
 
 
-  console.log('*****', category);
-  var count = category.products ? category.products.length : 0;
-  console.log(count);
+  console.log('CAT*****', category, products);
   return _react2.default.createElement(
     'div',
     null,
@@ -28642,7 +28648,7 @@ var Category = function Category(_ref) {
     _react2.default.createElement(
       'ul',
       null,
-      count > 0 ? products.map(function (product) {
+      products.map(function (product) {
         return _react2.default.createElement(
           'li',
           { key: product.id },
@@ -28650,7 +28656,7 @@ var Category = function Category(_ref) {
           product.name,
           ' '
         );
-      }) : null
+      })
     )
   );
 };
@@ -28673,8 +28679,8 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref3) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    createProduct: function createProduct(product) {
-      return dispatch((0, _store.createProduct)(product));
+    createProduct: function createProduct(categoryId) {
+      return dispatch((0, _store.createProduct)(categoryId));
     },
     deleteCategory: function deleteCategory(category) {
       return dispatch((0, _store.deleteCategory)(category));

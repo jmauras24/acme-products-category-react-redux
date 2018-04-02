@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Category = ({ category, products ,createProduct, deleteCategory  }) => {
 
-  console.log('*****',category)
-  const count = category.products ? category.products.length : 0;
-  console.log(count)
+  console.log('CAT*****',category, products)
   return(
     <div>
       <h3><Link to='/'>Home</Link></h3>
@@ -18,11 +16,9 @@ const Category = ({ category, products ,createProduct, deleteCategory  }) => {
       </span>
       <ul>
       {
-        count > 0 ?
           products.map( product => {
             return( <li key={ product.id} > { product.name } </li> )
           })
-          : null
       }
       </ul>
     </div>
@@ -39,7 +35,7 @@ const mapStateToProps = ({ categories, products }, { id }) => {
 
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    createProduct: (product) => dispatch(createProduct(product)),
+    createProduct: (categoryId) => dispatch(createProduct(categoryId)),
     deleteCategory: (category) => dispatch(deleteCategory(category))
   };
 };

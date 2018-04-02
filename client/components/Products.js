@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { deleteProduct } from '../store';
 import { Link } from 'react-router-dom';
 
-const Products = ({ products, deleteProduct }) => {
-  console.log('PRODUCTS', products)
+const Products = ({ products, deleteProduct, categories }) => {
+  console.log('PRODUCTS', products, categories);
   // if(!products.length)
   //   return null
+
+  // I do not always have a category array nested on return
   return(
     <div>
       <h2><Link to='/'>Home</Link></h2>
@@ -15,10 +17,9 @@ const Products = ({ products, deleteProduct }) => {
       <ul>
         {
           products.map( product => {
+            const category = categories.find( category => category.id === product.categoryId);
             return(
-              <div>
-                <li key={ product.id }> { product.name }  <button onClick={ () => deleteProduct(product) }>Delete Product </button>  ({ product.category.name }) </li>
-              </div>
+                <li key={ product.id }> { product.name }  <button onClick={ () => deleteProduct(product) }>Delete Product </button>  ({category.name}) </li>
             )
           })
         }
@@ -27,9 +28,11 @@ const Products = ({ products, deleteProduct }) => {
   )
 };
 
-const mapStateToProps = ({ products }) => {
+const mapStateToProps = ({ products, categories }) => {
+  console.log('products state', products)
   return {
-    products
+    products,
+    categories
   };
 };
 

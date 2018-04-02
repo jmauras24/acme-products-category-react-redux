@@ -51,8 +51,11 @@ export const deleteCategory = ( category ) => {
   return dispatch => {
     console.log(`deleteCategory`, category.id)
     return axios.delete(`/api/categories/${category.id}`)
-      .then(() => dispatch({ type: DELETE_CATEGORY, category }))
-      // .then(() => document.history.hash = '/')
+      .then(() => {
+        console.log('deleted category', category)
+        dispatch({ type: DELETE_CATEGORY, category })
+      })
+      .then(() => document.history.hash = '/products');
   };
 };
 
@@ -71,6 +74,7 @@ const products = ( state = [], action ) => {
     case DELETE_PRODUCT:
       return state.filter( product => product.id != action.product.id*1)
     case CREATE_PRODUCT:
+      console.log('CREATE_PRODUCT', action.product)
       return [...state, action.product]
     case DELETE_CATEGORY:
       console.log('delete category prods', action.category.id)
