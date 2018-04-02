@@ -1031,14 +1031,14 @@ var createCategory = exports.createCategory = function createCategory(categories
   };
 };
 
-var deleteCategory = exports.deleteCategory = function deleteCategory(category) {
+var deleteCategory = exports.deleteCategory = function deleteCategory(category, history) {
   return function (dispatch) {
     console.log('deleteCategory', category.id);
     return _axios2.default.delete('/api/categories/' + category.id).then(function () {
       console.log('deleted category', category);
       dispatch({ type: DELETE_CATEGORY, category: category });
     }).then(function () {
-      return document.history.hash = '/products';
+      return history.push('/');
     });
   };
 };
@@ -25399,8 +25399,9 @@ var App = function (_Component) {
               _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _Nav2.default }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/products', exact: true, component: _Products2.default }),
               _react2.default.createElement(_reactRouterDom.Route, { path: '/categories/:id', render: function render(_ref) {
-                  var match = _ref.match;
-                  return _react2.default.createElement(_Category2.default, { id: match.params.id });
+                  var match = _ref.match,
+                      history = _ref.history;
+                  return _react2.default.createElement(_Category2.default, { id: match.params.id, history: history });
                 } })
             )
           )
@@ -28677,13 +28678,15 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref3) {
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+var mapDispatchToProps = function mapDispatchToProps(dispatch, _ref4) {
+  var history = _ref4.history;
+
   return {
     createProduct: function createProduct(categoryId) {
       return dispatch((0, _store.createProduct)(categoryId));
     },
     deleteCategory: function deleteCategory(category) {
-      return dispatch((0, _store.deleteCategory)(category));
+      return dispatch((0, _store.deleteCategory)(category, history));
     }
   };
 };

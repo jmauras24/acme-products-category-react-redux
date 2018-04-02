@@ -33,10 +33,10 @@ const mapStateToProps = ({ categories, products }, { id }) => {
   };
 };
 
-const mapDispatchToProps = ( dispatch ) => {
+const mapDispatchToProps = ( dispatch, { history } ) => {
   return {
-    createProduct: (categoryId) => dispatch(createProduct(categoryId)),
-    deleteCategory: (category) => dispatch(deleteCategory(category))
+    createProduct: ( categoryId ) => dispatch(createProduct( categoryId )),
+    deleteCategory: ( category ) => dispatch(deleteCategory( category, history ))
   };
 };
 

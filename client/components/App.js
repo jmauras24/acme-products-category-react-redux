@@ -22,7 +22,7 @@ class App extends Component {
             <Switch>
               <Route path='/' exact component={ Nav } />
               <Route path='/products' exact component={ Products } />
-              <Route path='/categories/:id' render={ ({ match }) => <Category id={ match.params.id } />  } />
+              <Route path='/categories/:id' render={ ({ match, history }) => <Category id={ match.params.id } history={ history } />  } />
             </Switch>
           </div>
         </Router>

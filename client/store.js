@@ -47,7 +47,7 @@ export const createCategory = ( categories ) => {
   }
 }
 
-export const deleteCategory = ( category ) => {
+export const deleteCategory = ( category, history ) => {
   return dispatch => {
     console.log(`deleteCategory`, category.id)
     return axios.delete(`/api/categories/${category.id}`)
@@ -55,10 +55,11 @@ export const deleteCategory = ( category ) => {
         console.log('deleted category', category)
         dispatch({ type: DELETE_CATEGORY, category })
       })
-      .then(() => document.history.hash = '/products');
+      .then(() =>
+        history.push('/')
+      );
   };
 };
-
 //
 /* --------- --------- ------------------------------------- */
 // product
